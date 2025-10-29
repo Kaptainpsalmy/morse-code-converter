@@ -1,0 +1,60 @@
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Morse Code Converter</title>
+        <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
+        <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+    </head>
+    <body>
+        <div class="container">
+            <h1>📡 Morse Code Converter</h1>
+            <p>Convert between <b>Text ↔ Morse Code</b> instantly!</p>
+
+            <form method="POST" class="converter-form">
+                <label for="mode">Select Mode:</label>
+                <select name="mode" id="mode">
+                    <option value="text_to_morse" {% if mode == 'text_to_morse' %}selected{% endif %}>Text → Morse</option>
+                    <option value="morse_to_text" {% if mode == 'morse_to_text' %}selected{% endif %}>Morse → Text</option>
+                </select>
+
+                <textarea
+                    name="user_input"
+                    placeholder="Type text or Morse code here..."
+                    required>{{ request.form.get('user_input', '') }}</textarea>
+
+                <button type="submit">Convert</button>
+            </form>
+            {% if error %}
+    <div class="error">
+        {{ error }}
+    </div>
+    {% endif %}
+
+
+            {% if result %}
+            <div class="output-box">
+                <h3>🔹 Result:</h3>
+                <p class="result-text">{{ result }}</p>
+                <button type="button" id="copyBtn">Copy Result</button>
+
+            </div>
+            {% endif %}
+        </div>
+
+        <footer>
+            <p>Built by Samuel — powered by Flask</p>
+        </footer>
+    <script>
+    document.getElementById('copyBtn')?.addEventListener('click', () => {
+        const text = document.querySelector('.result-text')?.innerText;
+        if (text) {
+            navigator.clipboard.writeText(text);
+            alert('✅ Result copied to clipboard!');
+        }
+    });
+    </script>
+
+    </body>
+    </html>
